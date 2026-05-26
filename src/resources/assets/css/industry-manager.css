@@ -1,0 +1,197 @@
+/* ============================================
+   Industry Manager - Design System CSS
+   Version: 0.1.0 (scaffold)
+
+   Mirrors the canonical chrome from Mining Manager / Structure Manager.
+   Token prefix is `--im-*`, class prefix is `.im-*`, button class is
+   `.btn-im-primary`. All page content MUST be wrapped in either:
+       .industry-manager-wrapper  (primary)
+       .industry-manager-dashboard (dashboard surfaces)
+   so SeAT's global CSS does not override our chrome.
+   ============================================ */
+
+:root {
+    /* Primary palette — matches MM/SM indigo gradient */
+    --im-primary-start: #667eea;
+    --im-primary-end: #764ba2;
+
+    /* Dark chrome */
+    --im-dark-bg: #1a1d24;
+    --im-dark-card: #23262d;
+    --im-border: #2c3138;
+
+    /* Text */
+    --im-text-light: #d1d1d1;
+    --im-text-muted: #9ca3af;
+    --im-text-white: #ffffff;
+
+    /* Industry domain accents — adjust as the design firms up */
+    --im-manufacturing: #17a2b8;   /* cyan — manufacturing activity */
+    --im-invention: #9c27b0;       /* purple — invention activity */
+    --im-reaction: #fd7e14;        /* orange — reaction activity */
+    --im-research-me: #28a745;     /* green — ME research */
+    --im-research-te: #ffc107;     /* amber — TE research */
+
+    /* Status */
+    --im-success: #28a745;
+    --im-warning: #ffc107;
+    --im-danger: #dc3545;
+    --im-info: #17a2b8;
+
+    /* Spacing */
+    --im-spacing-xs: 5px;
+    --im-spacing-sm: 10px;
+    --im-spacing-md: 15px;
+    --im-spacing-lg: 20px;
+    --im-spacing-xl: 30px;
+
+    /* Radius */
+    --im-radius-sm: 3px;
+    --im-radius-md: 5px;
+    --im-radius-lg: 10px;
+    --im-radius-xl: 15px;
+
+    /* Transitions */
+    --im-transition-fast: 0.15s;
+    --im-transition-normal: 0.3s;
+}
+
+/* ============================================
+   Base wrapper
+   ============================================ */
+.industry-manager-wrapper .industry-manager,
+.industry-manager-dashboard .industry-manager {
+    font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    color: var(--im-text-light);
+}
+
+.industry-manager-wrapper .industry-manager a,
+.industry-manager-dashboard .industry-manager a {
+    transition: all var(--im-transition-fast) ease;
+}
+
+.industry-manager-wrapper .industry-manager a:hover,
+.industry-manager-dashboard .industry-manager a:hover {
+    text-decoration: none;
+}
+
+/* ============================================
+   Cards — `.card-dark` chrome primitive
+   ============================================ */
+.industry-manager-wrapper .card-dark,
+.industry-manager-dashboard .card-dark {
+    background-color: var(--im-dark-bg);
+    border: 1px solid var(--im-border);
+    transition: all var(--im-transition-normal) ease;
+}
+
+.industry-manager-wrapper .card-dark:hover,
+.industry-manager-dashboard .card-dark:hover {
+    border-color: rgba(102, 126, 234, 0.3);
+}
+
+.industry-manager-wrapper .card-dark .card-header,
+.industry-manager-dashboard .card-dark .card-header {
+    background-color: var(--im-dark-card);
+    border-bottom: 1px solid var(--im-border);
+    color: var(--im-text-white);
+    padding: var(--im-spacing-md) var(--im-spacing-lg);
+}
+
+.industry-manager-wrapper .card-dark .card-header h3,
+.industry-manager-wrapper .card-dark .card-header h4,
+.industry-manager-dashboard .card-dark .card-header h3,
+.industry-manager-dashboard .card-dark .card-header h4 {
+    margin: 0;
+    font-weight: 600;
+}
+
+.industry-manager-wrapper .card-dark .card-body,
+.industry-manager-dashboard .card-dark .card-body {
+    background-color: var(--im-dark-bg);
+    color: var(--im-text-light);
+    padding: var(--im-spacing-lg);
+}
+
+/* ============================================
+   Text utilities
+   ============================================ */
+.industry-manager-wrapper .im-text-muted,
+.industry-manager-dashboard .im-text-muted {
+    color: var(--im-text-muted) !important;
+}
+
+.industry-manager-wrapper .im-text-light,
+.industry-manager-dashboard .im-text-light {
+    color: var(--im-text-light) !important;
+}
+
+.industry-manager-wrapper code,
+.industry-manager-dashboard code {
+    color: var(--im-primary-start);
+    background-color: rgba(102, 126, 234, 0.1);
+    padding: 0.15em 0.35em;
+    border-radius: var(--im-radius-sm);
+    font-size: 0.9em;
+}
+
+/* ============================================
+   Buttons — `.btn-im-primary` indigo gradient
+   ============================================ */
+.industry-manager-wrapper .btn-im-primary,
+.industry-manager-dashboard .btn-im-primary {
+    background: linear-gradient(135deg, var(--im-primary-start) 0%, var(--im-primary-end) 100%);
+    border: none;
+    color: var(--im-text-white);
+    padding: 0.5rem 1rem;
+    border-radius: var(--im-radius-md);
+    transition: opacity var(--im-transition-normal) ease;
+}
+
+.industry-manager-wrapper .btn-im-primary:hover,
+.industry-manager-dashboard .btn-im-primary:hover {
+    opacity: 0.9;
+    color: var(--im-text-white);
+}
+
+/* ============================================
+   Diagnostic-tab intro box (per the diagnostic standard)
+   ============================================ */
+.industry-manager-wrapper .diag-tab-intro,
+.industry-manager-dashboard .diag-tab-intro {
+    background-color: rgba(102, 126, 234, 0.08);
+    border-left: 3px solid var(--im-primary-start);
+    padding: var(--im-spacing-md);
+    border-radius: var(--im-radius-md);
+    margin-bottom: var(--im-spacing-lg);
+}
+
+.industry-manager-wrapper .diag-tab-intro h4,
+.industry-manager-dashboard .diag-tab-intro h4 {
+    color: var(--im-text-white);
+    margin-top: var(--im-spacing-md);
+    margin-bottom: var(--im-spacing-xs);
+    font-size: 1rem;
+}
+
+.industry-manager-wrapper .diag-tab-intro h4:first-child,
+.industry-manager-dashboard .diag-tab-intro h4:first-child {
+    margin-top: 0;
+}
+
+.industry-manager-wrapper .diag-tab-intro p,
+.industry-manager-dashboard .diag-tab-intro p {
+    color: var(--im-text-light);
+    margin-bottom: var(--im-spacing-sm);
+}
+
+/* ============================================
+   Scaffold notice (temporary — will be removed once dashboard ships)
+   ============================================ */
+.industry-manager-wrapper .im-scaffold-notice,
+.industry-manager-dashboard .im-scaffold-notice {
+    padding: var(--im-spacing-md);
+    background-color: rgba(255, 193, 7, 0.08);
+    border-left: 3px solid var(--im-warning);
+    border-radius: var(--im-radius-md);
+}
