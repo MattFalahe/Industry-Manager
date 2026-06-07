@@ -519,3 +519,40 @@
 .industry-manager-wrapper .im-eta-remaining { font-weight: 700; color: var(--im-text-white); }
 .industry-manager-wrapper .im-eta-local { display: block; font-size: 0.72rem; color: var(--im-text-muted); }
 .industry-manager-wrapper .im-eta-done { font-weight: 700; color: #51cf66; }
+
+/* ============================================
+   Invention + Reactions
+   ============================================ */
+.industry-manager-wrapper .im-subhead {
+    color: var(--im-text-white);
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin: var(--im-spacing-md) 0 var(--im-spacing-sm);
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--im-border);
+}
+.industry-manager-wrapper .im-invent-outcome {
+    background: var(--im-dark-card);
+    border: 1px solid var(--im-border);
+    border-radius: var(--im-radius-md);
+    padding: var(--im-spacing-md);
+    margin-bottom: var(--im-spacing-sm);
+}
+.industry-manager-wrapper .im-invent-product {
+    font-weight: 700;
+    color: #8fa6ff;
+    margin-bottom: var(--im-spacing-sm);
+}
+.industry-manager-wrapper .im-invent-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: var(--im-spacing-sm);
+}
+.industry-manager-wrapper .im-invent-stat {
+    background: var(--im-dark-bg);
+    border: 1px solid var(--im-border);
+    border-radius: var(--im-radius-sm);
+    padding: var(--im-spacing-sm);
+    text-align: center;
+}
+.industry-manager-wrapper .im-invent-stat .im-result-value { font-size: 1.05rem; }

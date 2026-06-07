@@ -6,12 +6,15 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use IndustryManager\Helpers\AttributeDiscovery;
+use IndustryManager\Helpers\Decryptor;
 use IndustryManager\Helpers\IndustryActivity;
 use IndustryManager\Helpers\IndustryData;
 use IndustryManager\Services\BlueprintRepository;
 use IndustryManager\Services\CharacterResolver;
+use IndustryManager\Services\InventionCalculator;
 use IndustryManager\Services\JobsService;
 use IndustryManager\Services\ProductionCalculator;
+use IndustryManager\Services\ReactionService;
 
 /**
  * Industry Manager — primary controller.
@@ -183,14 +186,63 @@ class IndustryManagerController extends Controller
         ]);
     }
 
-    public function invention()
+    public function invention(Request $request, BlueprintRepository $blueprints, InventionCalculator $inv)
     {
-        return view('industry-manager::invention.index');
+        $sdeReady = IndustryData::isInstalled();
+        $bp = $request->query('bp');
+        $data = null;
+
+        if ($sdeReady && $bp !== null && ctype_digit((string) $bp)) {
+            $data = $inv->invent((int) $bp);
+        }
+
+        $picker = collect();
+        try {
+            $picker = $blueprints->groupByType($blueprints->forUser());
+        } catch (\Throwable $e) {
+            // non-fatal
+        }
+
+        return view('industry-manager::invention.index', [
+            'sdeReady' => $sdeReady,
+            'bp' => $bp,
+            'data' => $data,
+            'picker' => $picker,
+            'decryptors' => Decryptor::LIST,
+            'skillMultV' => Decryptor::SKILL_MULTIPLIER_AT_V,
+            'baseMe' => Decryptor::BASE_ME,
+            'baseTe' => Decryptor::BASE_TE,
+        ]);
     }
 
-    public function reactions()
+    public function reactions(Request $request, ReactionService $reactions, ProductionCalculator $calc)
     {
-        return view('industry-manager::reactions.index');
+        $sdeReady = IndustryData::isInstalled();
+        $formula = $request->query('formula');
+        $recipe = null;
+        $productName = null;
+
+        if ($sdeReady && $formula !== null && ctype_digit((string) $formula)) {
+            $recipe = $calc->recipe((int) $formula, IndustryActivity::REACTIONS);
+            if ($recipe && ! empty($recipe['product_type_id'])) {
+                $productName = DB::table('invTypes')->where('typeID', $recipe['product_type_id'])->value('typeName');
+            }
+        }
+
+        $formulas = collect();
+        try {
+            $formulas = $reactions->formulas();
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('[Industry Manager] reaction formulas failed: ' . $e->getMessage());
+        }
+
+        return view('industry-manager::reactions.index', [
+            'sdeReady' => $sdeReady,
+            'formula' => $formula,
+            'recipe' => $recipe,
+            'productName' => $productName,
+            'formulas' => $formulas,
+        ]);
     }
 
     public function settings()
