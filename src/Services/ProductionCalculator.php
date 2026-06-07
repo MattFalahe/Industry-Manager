@@ -149,6 +149,60 @@ class ProductionCalculator
         ];
     }
 
+    /**
+     * Industry Trace — per-material step-by-step breakdown of the ME formula,
+     * exposing every intermediate value so an operator can reconcile a single
+     * line against the in-game industry window and pinpoint any divergence.
+     *
+     * @return array{recipe:array, rows:array, me:int, runs:int}|null
+     */
+    public function trace(int $blueprintTypeId, int $me, int $runs, int $activityId = IndustryActivity::MANUFACTURING): ?array
+    {
+        if (! IndustryData::isInstalled()) {
+            return null;
+        }
+
+        $recipe = $this->recipe($blueprintTypeId, $activityId);
+        if (! $recipe) {
+            return null;
+        }
+
+        $runs = max(1, $runs);
+        $meFraction = max(0, min(10, $me)) / 100.0;
+        $structureModifier = 1.0; // v1: no structure bonus yet
+        $rigModifier = 1.0;       // v1: no rig bonus yet
+
+        $rows = [];
+        foreach ($recipe['materials'] as $mat) {
+            $base = $mat['base_quantity'];
+            $afterRuns = $base * $runs;
+            $modifier = (1.0 - $meFraction) * $structureModifier * $rigModifier;
+            $adjusted = $afterRuns * $modifier;
+            $rounded = round($adjusted, 2);
+            $final = (int) max($runs, (int) ceil($rounded));
+
+            $rows[] = [
+                'type_id' => $mat['type_id'],
+                'name' => $mat['name'],
+                'base_quantity' => $base,
+                'after_runs' => $afterRuns,
+                'modifier' => $modifier,
+                'adjusted' => $adjusted,
+                'rounded' => $rounded,
+                'final' => $final,
+            ];
+        }
+
+        return [
+            'recipe' => $recipe,
+            'rows' => $rows,
+            'me' => (int) $me,
+            'runs' => $runs,
+            'structure_modifier' => $structureModifier,
+            'rig_modifier' => $rigModifier,
+        ];
+    }
+
     // ----------------------------------------------------------------------
     // Internals
     // ----------------------------------------------------------------------

@@ -266,10 +266,26 @@ class IndustryManagerController extends Controller
     }
 
     /**
-     * Diagnostic page. Sprint 0 attribute-ID discovery tool lives here.
+     * Diagnostic page — admin-only, tabbed:
+     *   Health Checks (default) / Data Integrity / Industry Trace / Attribute Discovery
      */
-    public function diagnostic()
+    public function diagnostic(Request $request, StatusService $status, ProductionCalculator $calc)
     {
+        // --- Health / Data Integrity ---
+        $sde = $status->sdeStatus();
+        $coverage = $status->recipeCoverage();
+        $cacheDriver = $status->cacheDriver();
+
+        // --- Industry Trace ---
+        $traceBp = $request->query('trace_bp');
+        $traceMe = max(0, min(10, (int) $request->query('trace_me', 0)));
+        $traceRuns = max(1, (int) $request->query('trace_runs', 1));
+        $trace = null;
+        if (IndustryData::isInstalled() && $traceBp !== null && ctype_digit((string) $traceBp)) {
+            $trace = $calc->trace((int) $traceBp, $traceMe, $traceRuns);
+        }
+
+        // --- Attribute Discovery (Sprint 0 tool) ---
         $error = null;
         $categories = [];
         $rigGroups = [];
@@ -293,6 +309,13 @@ class IndustryManagerController extends Controller
         }
 
         return view('industry-manager::diagnostic.index', [
+            'sde' => $sde,
+            'coverage' => $coverage,
+            'cacheDriver' => $cacheDriver,
+            'trace' => $trace,
+            'traceBp' => $traceBp,
+            'traceMe' => $traceMe,
+            'traceRuns' => $traceRuns,
             'error' => $error,
             'categories' => $categories,
             'rigGroups' => $rigGroups,
