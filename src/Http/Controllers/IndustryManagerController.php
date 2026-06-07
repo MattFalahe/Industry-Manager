@@ -10,6 +10,7 @@ use IndustryManager\Helpers\IndustryActivity;
 use IndustryManager\Helpers\IndustryData;
 use IndustryManager\Services\BlueprintRepository;
 use IndustryManager\Services\CharacterResolver;
+use IndustryManager\Services\JobsService;
 use IndustryManager\Services\ProductionCalculator;
 
 /**
@@ -172,9 +173,14 @@ class IndustryManagerController extends Controller
         return view('industry-manager::structures.index');
     }
 
-    public function jobs()
+    public function jobs(JobsService $jobs)
     {
-        return view('industry-manager::jobs.index');
+        $data = $jobs->forUser();
+
+        return view('industry-manager::jobs.index', [
+            'jobs' => $data['jobs'],
+            'counts' => $data['counts'],
+        ]);
     }
 
     public function invention()

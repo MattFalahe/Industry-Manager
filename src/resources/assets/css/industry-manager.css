@@ -503,3 +503,19 @@
 .industry-manager-wrapper .im-picker-item:hover { border-color: rgba(102,126,234,0.5); transform: translateY(-2px); color: var(--im-text-white); }
 .industry-manager-wrapper .im-picker-name { font-weight: 600; color: var(--im-text-white); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .industry-manager-wrapper .im-picker-meta { font-size: 0.75rem; color: var(--im-text-muted); }
+
+/* ============================================
+   Jobs page
+   ============================================ */
+.industry-manager-wrapper .im-stat-mini { padding: var(--im-spacing-md); }
+.industry-manager-wrapper .im-stat-mini .im-stat-value { font-size: 1.4rem; }
+.industry-manager-wrapper .im-text-ready { color: #51cf66; }
+.industry-manager-wrapper .im-status-active   { background: rgba(23,162,184,0.18); color: #3ec9dd; }
+.industry-manager-wrapper .im-status-ready     { background: rgba(40,167,69,0.18); color: #51cf66; }
+.industry-manager-wrapper .im-status-paused    { background: rgba(255,193,7,0.18); color: #ffd43b; }
+.industry-manager-wrapper .im-status-delivered { background: rgba(108,117,125,0.22); color: #9aa0a6; }
+.industry-manager-wrapper .im-status-cancelled { background: rgba(220,53,69,0.18); color: #ff6b6b; }
+.industry-manager-wrapper .im-status-reverted  { background: rgba(220,53,69,0.18); color: #ff6b6b; }
+.industry-manager-wrapper .im-eta-remaining { font-weight: 700; color: var(--im-text-white); }
+.industry-manager-wrapper .im-eta-local { display: block; font-size: 0.72rem; color: var(--im-text-muted); }
+.industry-manager-wrapper .im-eta-done { font-weight: 700; color: #51cf66; }
