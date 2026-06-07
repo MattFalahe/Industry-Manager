@@ -9,12 +9,14 @@ use IndustryManager\Helpers\AttributeDiscovery;
 use IndustryManager\Helpers\Decryptor;
 use IndustryManager\Helpers\IndustryActivity;
 use IndustryManager\Helpers\IndustryData;
+use IndustryManager\Helpers\RigAttributes;
 use IndustryManager\Services\BlueprintRepository;
 use IndustryManager\Services\CharacterResolver;
 use IndustryManager\Services\InventionCalculator;
 use IndustryManager\Services\JobsService;
 use IndustryManager\Services\ProductionCalculator;
 use IndustryManager\Services\ReactionService;
+use IndustryManager\Services\StructureService;
 
 /**
  * Industry Manager — primary controller.
@@ -171,9 +173,12 @@ class IndustryManagerController extends Controller
         return redirect()->route('industry-manager.calculator', ['bp' => (int) $type_id]);
     }
 
-    public function structures()
+    public function structures(StructureService $structures)
     {
-        return view('industry-manager::structures.index');
+        return view('industry-manager::structures.index', [
+            'structures' => $structures->forUser(),
+            'rigsCalibrated' => RigAttributes::isConfigured(),
+        ]);
     }
 
     public function jobs(JobsService $jobs)
