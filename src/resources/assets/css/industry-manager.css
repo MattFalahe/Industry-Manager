@@ -608,3 +608,16 @@
     padding: 1px 6px; border-radius: var(--im-radius-sm);
 }
 .industry-manager-wrapper .im-rig-bonus.im-rig-te { background: rgba(255,193,7,0.16); color: #ffd43b; margin-left: 4px; }
+
+/* ============================================
+   Inline alerts (settings / diagnostic)
+   ============================================ */
+.industry-manager-wrapper .im-inline-alert {
+    margin-bottom: var(--im-spacing-md);
+    border-radius: var(--im-radius-md);
+    padding: var(--im-spacing-md);
+    border-left-width: 4px;
+    border-left-style: solid;
+}
+.industry-manager-wrapper .alert-mc-success { background: rgba(40,167,69,0.12); border-left-color: var(--im-success); color: var(--im-text-light); }
+.industry-manager-wrapper .alert-mc-warning { background: rgba(255,193,7,0.12); border-left-color: var(--im-warning); color: var(--im-text-light); }

@@ -16,6 +16,7 @@ use IndustryManager\Services\InventionCalculator;
 use IndustryManager\Services\JobsService;
 use IndustryManager\Services\ProductionCalculator;
 use IndustryManager\Services\ReactionService;
+use IndustryManager\Services\StatusService;
 use IndustryManager\Services\StructureService;
 
 /**
@@ -250,9 +251,13 @@ class IndustryManagerController extends Controller
         ]);
     }
 
-    public function settings()
+    public function settings(StatusService $status)
     {
-        return view('industry-manager::settings.index');
+        return view('industry-manager::settings.index', [
+            'sde' => $status->sdeStatus(),
+            'coverage' => $status->recipeCoverage(),
+            'cacheDriver' => $status->cacheDriver(),
+        ]);
     }
 
     public function help()
