@@ -1,0 +1,36 @@
+<?php
+
+namespace IndustryManager\Models\Sde;
+
+use Illuminate\Database\Eloquent\Model;
+use Seat\Eveapi\Models\Sde\InvType;
+
+/**
+ * industryActivityProbabilities — base success chance per (blueprint, activity,
+ * product). Primarily activityID = 8 (invention).
+ *
+ * Columns (Fuzzwork dump): typeID, activityID, productTypeID, probability
+ *
+ * `probability` is the BASE chance (0..1) before decryptor + skill modifiers.
+ * The invention calculator layers those on top.
+ */
+class IndustryActivityProbability extends Model
+{
+    protected $table = 'industryActivityProbabilities';
+
+    public $timestamps = false;
+
+    public $incrementing = false;
+
+    protected $guarded = [];
+
+    public function blueprintType()
+    {
+        return $this->belongsTo(InvType::class, 'typeID', 'typeID');
+    }
+
+    public function productType()
+    {
+        return $this->belongsTo(InvType::class, 'productTypeID', 'typeID');
+    }
+}

@@ -74,6 +74,19 @@ class IndustryManagerServiceProvider extends AbstractSeatPlugin
         $this->registerPermissions(__DIR__ . '/Config/Permissions/industry-manager.permissions.php', 'industry-manager');
 
         $this->mergeConfigFrom(__DIR__ . '/Config/industry-manager.config.php', 'industry-manager');
+
+        // Register the industry-recipe SDE tables with SeAT's own SDE updater.
+        // These tables (industryActivity*) are NOT seeded by SeAT core, but
+        // Fuzzwork publishes them in the exact same dump format SeAT already
+        // consumes. registerSdeTables() appends them to config('seat.sde.tables'),
+        // so the next `php artisan eve:update:sde --force` downloads + imports
+        // them automatically alongside the core SDE. This keeps the recipe data
+        // patch-current with zero bundled payload and zero ESI calls.
+        //
+        // See \IndustryManager\Helpers\IndustryData::TABLES for the canonical list
+        // and IndustryData::isInstalled() for the runtime guard the UI uses to
+        // degrade gracefully when the operator hasn't run the SDE update yet.
+        $this->registerSdeTables(\IndustryManager\Helpers\IndustryData::TABLES);
     }
 
     public function getName(): string
