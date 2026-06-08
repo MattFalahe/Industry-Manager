@@ -67,7 +67,7 @@
                 <div class="card-header"><h3 class="card-title mb-0"><i class="fas fa-sitemap mr-2"></i> PI Schematics</h3></div>
                 <div class="card-body">
                     @if(!$piReady)
-                        <p class="im-text-muted">Load the PI schematic data (run <code>eve:update:sde --force</code>) to browse schematics.</p>
+                        <p class="im-text-muted">Import the PI schematic data (run <code>php artisan industry-manager:import-sde</code>) to browse schematics.</p>
                     @elseif($schematics->isEmpty())
                         <p class="im-text-muted">No schematics found.</p>
                     @else

@@ -1,10 +1,10 @@
-{{-- Reusable banner shown when the industryActivity* SDE tables aren't present.
-     Industry Manager registers those tables with SeAT's SDE updater; the
-     operator just needs to run the update once. --}}
+{{-- Reusable banner shown when the industry/PI recipe tables aren't present.
+     Industry Manager imports these itself via its own command — it does NOT
+     touch SeAT's core SDE. --}}
 <div class="im-sde-notice">
-    <h4><i class="fas fa-triangle-exclamation mr-2"></i> Industry recipe data not loaded yet</h4>
-    <p>Industry Manager reads EVE's industry recipes (what each blueprint consumes, produces, and how long it takes) from SeAT's Static Data Export. Those industry tables aren't in your database yet.</p>
-    <p>An administrator needs to run SeAT's SDE update once, from the SeAT server:</p>
-    <pre>php artisan eve:update:sde --force</pre>
-    <p class="im-text-muted">This downloads the industry tables (<code>industryActivityMaterials</code>, <code>industryActivityProducts</code>, and friends) alongside SeAT's normal static data, in the same format SeAT already uses. No ESI, API keys, or external accounts are involved. Once it finishes, reload this page and everything lights up.</p>
+    <h4><i class="fas fa-triangle-exclamation mr-2"></i> Recipe data not imported yet</h4>
+    <p>Industry Manager needs EVE's industry &amp; planetary recipe tables (what each blueprint or schematic consumes and produces). These aren't part of SeAT's core data, so the plugin imports them itself.</p>
+    <p>An administrator runs this once on the SeAT server (re-run after an EVE patch to refresh):</p>
+    <pre>php artisan industry-manager:import-sde</pre>
+    <p class="im-text-muted">It downloads only Industry Manager's tables (a few small files) from Fuzzwork and imports them directly. It does <strong>not</strong> re-download or touch SeAT's core SDE, and uses no ESI or API keys. Once it finishes, reload this page.</p>
 </div>

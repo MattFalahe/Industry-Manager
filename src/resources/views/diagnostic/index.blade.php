@@ -54,7 +54,7 @@
                         @if($sde['installed'])
                             <div class="alert im-inline-alert alert-mc-success"><i class="fas fa-circle-check mr-2"></i> Industry recipe data loaded. SDE version <code>{{ $sde['version'] ?? 'unknown' }}</code>.</div>
                         @else
-                            <div class="alert im-inline-alert alert-mc-warning"><i class="fas fa-triangle-exclamation mr-2"></i> Industry recipe data NOT loaded. Run <code>php artisan eve:update:sde --force</code>.</div>
+                            <div class="alert im-inline-alert alert-mc-warning"><i class="fas fa-triangle-exclamation mr-2"></i> Industry recipe data NOT loaded. Run <code>php artisan industry-manager:import-sde</code>.</div>
                         @endif
 
                         <table class="table im-table im-table-compact">
@@ -80,7 +80,7 @@
                             <h4>When to use</h4>
                             <p>After an SDE update, to confirm the industry tables imported fully (not a partial/aborted download).</p>
                             <h4>Heads up</h4>
-                            <p>Zero counts with the tables present usually means the SDE import was interrupted — re-run <code>eve:update:sde --force</code>.</p>
+                            <p>Zero counts with the tables present usually means the import was interrupted — re-run <code>php artisan industry-manager:import-sde</code>.</p>
                         </div>
 
                         <div class="im-result-grid">
@@ -144,7 +144,7 @@
                         </div>
 
                         @if($error)
-                            <div class="alert alert-danger"><strong>Discovery failed:</strong> {{ $error }}<br><small>Most common cause: SDE not seeded. Run <code>php artisan eve:update:sde</code> and reload.</small></div>
+                            <div class="alert alert-danger"><strong>Discovery failed:</strong> {{ $error }}<br><small>This reads SeAT's core SDE (invTypes/dgmTypeAttributes). If those are missing, your SeAT core SDE itself needs attention.</small></div>
                         @else
                             <div class="step-section">
                                 <h4>Step 1 &mdash; Structure categories ({{ count($categories) }})</h4>

@@ -8,11 +8,12 @@ use Illuminate\Support\Facades\Schema;
  * IndustryData — runtime guard + canonical table/constant registry for the
  * industry-recipe SDE tables this plugin depends on.
  *
- * These tables are downloaded by SeAT's own `eve:update:sde` once the plugin
- * registers them (see IndustryManagerServiceProvider::register ->
- * registerSdeTables). Until the operator runs that update, the tables do not
- * exist — so every read path MUST gate on isInstalled() and the UI must show
- * the "run eve:update:sde" notice rather than 500.
+ * These tables are downloaded by our own importer command
+ * (`php artisan industry-manager:import-sde`, see ImportSdeCommand), which
+ * pulls only our tables from Fuzzwork's `latest/` dump — independent of SeAT's
+ * core `eve:update:sde`. Until the operator runs the importer, the tables do
+ * not exist — so every read path MUST gate on isInstalled()/isPiInstalled()
+ * and the UI must show the "import recipe data" notice rather than 500.
  *
  * No ESI. Pure SDE + synced-table consumer.
  */
@@ -127,5 +128,26 @@ class IndustryData
     {
         self::$installedMemo = null;
         self::$piInstalledMemo = null;
+    }
+
+    /**
+     * Cache-busting token for recipe caches. Our importer
+     * (industry-manager:import-sde) stamps `industry_manager_sde_version` on
+     * each successful run, so re-importing after an EVE patch invalidates every
+     * cached recipe. Falls back to the core SDE version, then a constant.
+     */
+    public static function recipeVersion(): string
+    {
+        try {
+            $v = setting('industry_manager_sde_version', true);
+            if ($v) {
+                return (string) $v;
+            }
+            $core = setting('installed_sde', true);
+
+            return $core ? (string) $core : 'none';
+        } catch (\Throwable $e) {
+            return 'none';
+        }
     }
 }

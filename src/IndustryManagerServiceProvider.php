@@ -34,7 +34,7 @@ class IndustryManagerServiceProvider extends AbstractSeatPlugin
         // resolve-time fallback for web-invoked `Artisan::call(...)`). The
         // command list is empty at scaffold time; populate as features land.
         $imCommands = [
-            // e.g. \IndustryManager\Console\Commands\SeedIndustryActivitiesCommand::class,
+            \IndustryManager\Console\Commands\ImportSdeCommand::class,
         ];
 
         if (! empty($imCommands)) {
@@ -75,25 +75,16 @@ class IndustryManagerServiceProvider extends AbstractSeatPlugin
 
         $this->mergeConfigFrom(__DIR__ . '/Config/industry-manager.config.php', 'industry-manager');
 
-        // Register the industry-recipe SDE tables with SeAT's own SDE updater.
-        // These tables (industryActivity*) are NOT seeded by SeAT core, but
-        // Fuzzwork publishes them in the exact same dump format SeAT already
-        // consumes. registerSdeTables() appends them to config('seat.sde.tables'),
-        // so the next `php artisan eve:update:sde --force` downloads + imports
-        // them automatically alongside the core SDE. This keeps the recipe data
-        // patch-current with zero bundled payload and zero ESI calls.
-        //
-        // See \IndustryManager\Helpers\IndustryData::TABLES for the canonical list
-        // and IndustryData::isInstalled() for the runtime guard the UI uses to
-        // degrade gracefully when the operator hasn't run the SDE update yet.
-        $this->registerSdeTables(\IndustryManager\Helpers\IndustryData::TABLES);
-
-        // Planetary Industry schematic tables (factory recipes). Registered
-        // separately but via the same SDE updater path, so a single
-        // `eve:update:sde --force` brings in both the manufacturing and the
-        // PI recipe data. The PI page degrades gracefully (IndustryData::
-        // isPiInstalled guard) until the operator runs the update.
-        $this->registerSdeTables(\IndustryManager\Helpers\IndustryData::PI_TABLES);
+        // NOTE on recipe data: the industry + planetary recipe tables
+        // (industryActivity* / planetSchematics*) are NOT part of SeAT's core
+        // SDE. We deliberately do NOT use registerSdeTables() to piggyback on
+        // `eve:update:sde`: that re-downloads the ENTIRE core SDE (heavy) and is
+        // coupled to a version-pinned Fuzzwork path that can 404 on a rotated
+        // version. Instead, the operator runs our own dedicated importer,
+        // `php artisan industry-manager:import-sde`, which fetches ONLY our ~7
+        // tables from Fuzzwork's stable `latest/` dump. See ImportSdeCommand and
+        // IndustryData::isInstalled() / isPiInstalled() (the runtime guards the
+        // UI uses to show an "import recipe data" notice until then).
     }
 
     public function getName(): string

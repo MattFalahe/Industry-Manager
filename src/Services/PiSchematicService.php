@@ -236,12 +236,6 @@ class PiSchematicService
 
     private function sdeVersion(): string
     {
-        try {
-            $v = setting('installed_sde', true);
-
-            return $v ? (string) $v : 'unknown';
-        } catch (\Throwable $e) {
-            return 'unknown';
-        }
+        return IndustryData::recipeVersion();
     }
 }

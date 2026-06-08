@@ -15,9 +15,10 @@ use IndustryManager\Helpers\IndustryData;
  *
  * Performance design:
  *   - A blueprint's RECIPE (which materials, base quantities, time, product) is
- *     static SDE data, independent of ME/runs. We cache it keyed by the
- *     installed SDE version, so it auto-invalidates on `eve:update:sde` and
- *     otherwise lives ~forever. ME/runs are applied cheaply at compute time.
+ *     static SDE data, independent of ME/runs. We cache it keyed by the recipe
+ *     import version (IndustryData::recipeVersion), so re-running the importer
+ *     invalidates it and it otherwise lives ~forever. ME/runs are applied
+ *     cheaply at compute time.
  *   - The product->blueprint reverse map ("can this material be built?") is
  *     built once and cached as a single blob, plus memoised per request.
  *   - Recursion reuses cached recipes, so a deep tree is mostly array math.
@@ -353,12 +354,6 @@ class ProductionCalculator
 
     private function sdeVersion(): string
     {
-        try {
-            $v = setting('installed_sde', true);
-
-            return $v ? (string) $v : 'unknown';
-        } catch (\Throwable $e) {
-            return 'unknown';
-        }
+        return IndustryData::recipeVersion();
     }
 }

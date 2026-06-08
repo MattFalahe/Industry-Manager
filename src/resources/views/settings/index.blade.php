@@ -20,7 +20,7 @@
                 @if($sde['installed'])
                     <div class="alert alert-mc-success im-inline-alert"><i class="fas fa-circle-check mr-2"></i> Industry recipe data is loaded. Installed SDE version: <code>{{ $sde['version'] ?? 'unknown' }}</code>.</div>
                 @else
-                    <div class="alert alert-mc-warning im-inline-alert"><i class="fas fa-triangle-exclamation mr-2"></i> Industry recipe data is <strong>not loaded</strong>. Run <code>php artisan eve:update:sde --force</code> on the SeAT server.</div>
+                    <div class="alert alert-mc-warning im-inline-alert"><i class="fas fa-triangle-exclamation mr-2"></i> Industry recipe data is <strong>not loaded</strong>. Run <code>php artisan industry-manager:import-sde</code> on the SeAT server.</div>
                 @endif
 
                 <div class="im-result-grid mb-3">
@@ -72,7 +72,7 @@
             <div class="card-body">
                 <ul class="im-text-muted">
                     <li><strong>No ESI calls.</strong> Blueprints, jobs, structures and assets all come from data SeAT already syncs.</li>
-                    <li><strong>Recipes</strong> (what each blueprint needs) come from EVE's Static Data Export. Industry Manager registers the industry tables with SeAT's SDE updater, so <code>eve:update:sde</code> downloads them in the same format SeAT already uses.</li>
+                    <li><strong>Recipes</strong> (what each blueprint or schematic needs) come from EVE's Static Data Export. Industry Manager imports its own tables via <code>php artisan industry-manager:import-sde</code> (Fuzzwork <code>latest/</code>), independent of SeAT's core SDE.</li>
                     <li><strong>Pricing / ISK</strong> is not part of this version. It arrives with Manager Core integration in a later update.</li>
                     <li>Persisted preferences (default ME, decryptor, etc.) are planned but not stored yet.</li>
                 </ul>

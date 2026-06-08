@@ -15,10 +15,10 @@
                 <h3 class="card-title"><i class="fas fa-question-circle mr-2"></i> Help &amp; Documentation</h3>
             </div>
             <div class="card-body">
-                <h4>One-time setup: load the industry recipes</h4>
-                <p class="im-text-muted">Industry Manager reads EVE's industry recipes (what each blueprint consumes, produces, and how long it takes) from SeAT's Static Data Export. SeAT core does not ship those particular tables, so the plugin asks SeAT to download them. An administrator runs this once on the SeAT server:</p>
-                <pre style="background-color: rgba(0,0,0,0.3); padding: 0.75rem; border-radius: 0.25rem; color: #8fe388;">php artisan eve:update:sde --force</pre>
-                <p class="im-text-muted">This pulls the industry tables (<code>industryActivityMaterials</code>, <code>industryActivityProducts</code>, and friends) alongside SeAT's normal static data, in the format SeAT already uses. No ESI, API keys, or external accounts. Re-run it whenever you update the SDE for a new EVE patch; the recipe cache refreshes automatically.</p>
+                <h4>One-time setup: import the recipes</h4>
+                <p class="im-text-muted">Industry Manager needs EVE's industry &amp; planetary recipes (what each blueprint or schematic consumes, produces, and how long it takes). These aren't part of SeAT's core Static Data Export, so the plugin imports them itself. An administrator runs this once on the SeAT server:</p>
+                <pre style="background-color: rgba(0,0,0,0.3); padding: 0.75rem; border-radius: 0.25rem; color: #8fe388;">php artisan industry-manager:import-sde</pre>
+                <p class="im-text-muted">This downloads only Industry Manager's own tables (<code>industryActivityMaterials</code>, <code>planetSchematics</code>, and friends — a few small files) from Fuzzwork and imports them directly. It does <strong>not</strong> re-download or modify SeAT's core SDE, and uses no ESI, API keys, or external accounts. Re-run it after an EVE patch to refresh; the recipe cache invalidates automatically on each import.</p>
 
                 <h4>What's in v1.0.0</h4>
                 <ul class="im-text-muted">
