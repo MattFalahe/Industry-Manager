@@ -29,8 +29,13 @@ class IndustryData
     public const TABLE_PROBABILITIES = 'industryActivityProbabilities';
     public const TABLE_BLUEPRINTS = 'industryBlueprints';
 
+    /** Planetary Industry schematic SDE (factory recipes). */
+    public const TABLE_PI_SCHEMATICS = 'planetSchematics';
+    public const TABLE_PI_TYPEMAP = 'planetSchematicsTypeMap';
+
     /**
-     * The full set registered with config('seat.sde.tables').
+     * The manufacturing/invention/reaction set registered with
+     * config('seat.sde.tables').
      */
     public const TABLES = [
         self::TABLE_ACTIVITY,
@@ -42,10 +47,21 @@ class IndustryData
     ];
 
     /**
-     * Per-request memo so repeated isInstalled() calls don't re-hit the
+     * The Planetary Industry set (registered separately so the PI page can be
+     * absent without affecting the core industry pages, and vice versa).
+     */
+    public const PI_TABLES = [
+        self::TABLE_PI_SCHEMATICS,
+        self::TABLE_PI_TYPEMAP,
+    ];
+
+    /**
+     * Per-request memos so repeated isInstalled() calls don't re-hit the
      * schema inspector (which queries information_schema on MySQL).
      */
     private static ?bool $installedMemo = null;
+
+    private static ?bool $piInstalledMemo = null;
 
     /**
      * Is the recipe data present? We treat the two load-bearing tables
@@ -69,6 +85,27 @@ class IndustryData
     }
 
     /**
+     * Is the Planetary Industry schematic data present? Both schematic tables
+     * are needed to resolve factory recipes. The live colony data
+     * (character_planet_*) is synced by SeAT core and checked separately.
+     */
+    public static function isPiInstalled(): bool
+    {
+        if (self::$piInstalledMemo !== null) {
+            return self::$piInstalledMemo;
+        }
+
+        try {
+            self::$piInstalledMemo = Schema::hasTable(self::TABLE_PI_SCHEMATICS)
+                && Schema::hasTable(self::TABLE_PI_TYPEMAP);
+        } catch (\Throwable $e) {
+            self::$piInstalledMemo = false;
+        }
+
+        return self::$piInstalledMemo;
+    }
+
+    /**
      * Fine-grained presence check for an individual table, memo-free.
      * Used by features that need an optional table (e.g. probabilities for
      * invention) and want to degrade just that panel.
@@ -89,5 +126,6 @@ class IndustryData
     public static function flush(): void
     {
         self::$installedMemo = null;
+        self::$piInstalledMemo = null;
     }
 }

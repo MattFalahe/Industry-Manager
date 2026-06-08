@@ -621,3 +621,46 @@
 }
 .industry-manager-wrapper .alert-mc-success { background: rgba(40,167,69,0.12); border-left-color: var(--im-success); color: var(--im-text-light); }
 .industry-manager-wrapper .alert-mc-warning { background: rgba(255,193,7,0.12); border-left-color: var(--im-warning); color: var(--im-text-light); }
+
+/* ============================================
+   Planetary Industry
+   ============================================ */
+.industry-manager-wrapper .im-text-danger { color: #ff6b6b !important; }
+.industry-manager-wrapper .im-tier-badge {
+    display: inline-block;
+    min-width: 26px;
+    text-align: center;
+    padding: 1px 6px;
+    border-radius: var(--im-radius-sm);
+    font-size: 0.7rem;
+    font-weight: 700;
+    margin-right: 4px;
+}
+.industry-manager-wrapper .im-tier-0 { background: rgba(154,160,166,0.18); color: #c8cdd6; }
+.industry-manager-wrapper .im-tier-1 { background: rgba(40,167,69,0.18); color: #51cf66; }
+.industry-manager-wrapper .im-tier-2 { background: rgba(23,162,184,0.18); color: #3ec9dd; }
+.industry-manager-wrapper .im-tier-3 { background: rgba(255,193,7,0.18); color: #ffd43b; }
+.industry-manager-wrapper .im-tier-4 { background: rgba(156,39,176,0.18); color: #ce93d8; }
+.industry-manager-wrapper .im-tier-x { background: rgba(108,117,125,0.2); color: #9aa0a6; }
+
+.industry-manager-wrapper .im-pi-progress {
+    background: rgba(0,0,0,0.3);
+    border-radius: var(--im-radius-sm);
+    height: 18px;
+    overflow: hidden;
+    border: 1px solid var(--im-border);
+}
+.industry-manager-wrapper .im-pi-progress-bar {
+    height: 100%;
+    width: 0;
+    line-height: 18px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    transition: width 0.4s ease;
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+}
+.industry-manager-wrapper .im-pi-progress-bar.warn { background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%); }
+.industry-manager-wrapper .im-pi-progress-bar.danger { background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); }
+.industry-manager-wrapper .im-eta-expired { font-weight: 700; color: #ff6b6b; }

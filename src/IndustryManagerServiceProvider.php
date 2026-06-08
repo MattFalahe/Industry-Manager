@@ -87,6 +87,13 @@ class IndustryManagerServiceProvider extends AbstractSeatPlugin
         // and IndustryData::isInstalled() for the runtime guard the UI uses to
         // degrade gracefully when the operator hasn't run the SDE update yet.
         $this->registerSdeTables(\IndustryManager\Helpers\IndustryData::TABLES);
+
+        // Planetary Industry schematic tables (factory recipes). Registered
+        // separately but via the same SDE updater path, so a single
+        // `eve:update:sde --force` brings in both the manufacturing and the
+        // PI recipe data. The PI page degrades gracefully (IndustryData::
+        // isPiInstalled guard) until the operator runs the update.
+        $this->registerSdeTables(\IndustryManager\Helpers\IndustryData::PI_TABLES);
     }
 
     public function getName(): string

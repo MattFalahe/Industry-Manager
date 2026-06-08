@@ -78,6 +78,22 @@ Route::group([
         'middleware' => 'can:industry-manager.view',
     ]);
 
+    // -----------------------------------------------------------------
+    // Planetary Industry (read-only consumer of SeAT's character_planet_*
+    // tables + the registered PI schematic SDE)
+    // -----------------------------------------------------------------
+    Route::get('/planetary', [
+        'as' => 'industry-manager.pi.overview',
+        'uses' => 'PlanetaryController@overview',
+        'middleware' => 'can:industry-manager.view',
+    ]);
+
+    Route::get('/planetary/schematics', [
+        'as' => 'industry-manager.pi.schematics',
+        'uses' => 'PlanetaryController@schematics',
+        'middleware' => 'can:industry-manager.view',
+    ]);
+
     // Diagnostic — admin-only, NOT in sidebar. URL-only access.
     // Hosts the Sprint-0 attribute-ID discovery tool as its first tab.
     Route::get('/diagnostic', [
