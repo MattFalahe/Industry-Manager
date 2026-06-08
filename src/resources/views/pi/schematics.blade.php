@@ -67,7 +67,7 @@
                 <div class="card-header"><h3 class="card-title mb-0"><i class="fas fa-sitemap mr-2"></i> PI Schematics</h3></div>
                 <div class="card-body">
                     @if(!$piReady)
-                        <p class="im-text-muted">Import the PI schematic data (run <code>php artisan industry-manager:import-sde</code>) to browse schematics.</p>
+                        <p class="im-text-muted">PI schematic data isn't loaded in this build, so there's nothing to browse here yet. Your planetary colonies, extractors and factories still appear under <a href="{{ route('industry-manager.pi.overview') }}">Planetary Industry</a>.</p>
                     @elseif($schematics->isEmpty())
                         <p class="im-text-muted">No schematics found.</p>
                     @else

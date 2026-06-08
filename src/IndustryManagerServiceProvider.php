@@ -34,7 +34,8 @@ class IndustryManagerServiceProvider extends AbstractSeatPlugin
         // resolve-time fallback for web-invoked `Artisan::call(...)`). The
         // command list is empty at scaffold time; populate as features land.
         $imCommands = [
-            \IndustryManager\Console\Commands\ImportSdeCommand::class,
+            // SDE import command removed for now (see register() note). Recipe
+            // tables are consumed when present but nothing imports them yet.
         ];
 
         if (! empty($imCommands)) {
@@ -77,15 +78,15 @@ class IndustryManagerServiceProvider extends AbstractSeatPlugin
 
         // NOTE on recipe data: the industry + planetary recipe tables
         // (industryActivity* / planetSchematics*) are NOT part of SeAT's core
-        // SDE. We deliberately do NOT use registerSdeTables() to piggyback on
-        // `eve:update:sde`: that re-downloads the ENTIRE core SDE and is coupled
-        // to a version-pinned Fuzzwork path that can 404 on a rotated version
-        // (and Fuzzwork lags patches anyway). Instead the operator runs our own
-        // importer, `php artisan industry-manager:import-sde`, which flattens
-        // CCP's official JSONL SDE (blueprints.jsonl + planetSchematics.jsonl) —
-        // re-using the files SeAT already extracted — into our flat tables. See
-        // ImportSdeCommand and IndustryData::isInstalled()/isPiInstalled() (the
-        // runtime guards the UI uses to show an "import recipe data" notice).
+        // SDE, and SDE import has been REMOVED for now. The consuming code
+        // (ProductionCalculator, PiSchematicService, the SDE models) stays —
+        // it lights up if/when those tables are populated. IndustryData::
+        // isInstalled()/isPiInstalled() now check for actual ROWS (not just
+        // table existence), so every recipe-powered page degrades to a neutral
+        // "recipe data not loaded" notice until then. Everything that reads
+        // SeAT's live synced tables (blueprints, jobs, structures, planetary
+        // colonies) works regardless. A direct importer into plugin-owned
+        // tables can be re-introduced later.
     }
 
     public function getName(): string

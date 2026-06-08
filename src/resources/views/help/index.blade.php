@@ -15,10 +15,9 @@
                 <h3 class="card-title"><i class="fas fa-question-circle mr-2"></i> Help &amp; Documentation</h3>
             </div>
             <div class="card-body">
-                <h4>One-time setup: import the recipes</h4>
-                <p class="im-text-muted">Industry Manager needs EVE's industry &amp; planetary recipes (what each blueprint or schematic consumes, produces, and how long it takes). These aren't part of SeAT's core Static Data Export, so the plugin imports them itself. An administrator runs this once on the SeAT server:</p>
-                <pre style="background-color: rgba(0,0,0,0.3); padding: 0.75rem; border-radius: 0.25rem; color: #8fe388;">php artisan industry-manager:import-sde</pre>
-                <p class="im-text-muted">This reads EVE's official CCP Static Data Export (<code>blueprints.jsonl</code> + <code>planetSchematics.jsonl</code>) and flattens just the industry &amp; planetary recipes into Industry Manager's own tables. It re-uses the SDE files SeAT already extracted when present (zero download), otherwise fetches CCP's latest SDE. It does <strong>not</strong> modify SeAT's core SDE, and uses no ESI, API keys, or external accounts. Re-run it after an EVE patch to refresh; the recipe cache invalidates automatically on each import.</p>
+                <h4>Recipe data</h4>
+                <p class="im-text-muted">Some tools (the production calculator, schematics, invention, reactions) need EVE's industry &amp; planetary recipes — what each blueprint or schematic consumes, produces, and how long it takes. <strong>This build does not load that recipe data yet</strong>, so those pages show a "recipe data not loaded" notice.</p>
+                <p class="im-text-muted">Everything that reads data SeAT already syncs works today: your blueprints, industry jobs, structures, and planetary colonies. Recipe import will return in a later update.</p>
 
                 <h4>What's in v1.0.0</h4>
                 <ul class="im-text-muted">

@@ -54,7 +54,7 @@
                         @if($sde['installed'])
                             <div class="alert im-inline-alert alert-mc-success"><i class="fas fa-circle-check mr-2"></i> Industry recipe data loaded. SDE version <code>{{ $sde['version'] ?? 'unknown' }}</code>.</div>
                         @else
-                            <div class="alert im-inline-alert alert-mc-warning"><i class="fas fa-triangle-exclamation mr-2"></i> Industry recipe data NOT loaded. Run <code>php artisan industry-manager:import-sde</code>.</div>
+                            <div class="alert im-inline-alert alert-mc-warning"><i class="fas fa-circle-info mr-2"></i> Industry recipe data NOT loaded. SDE import is disabled in this build; recipe-powered pages stay empty, but the live-data pages (blueprints, jobs, structures, planetary colonies) work.</div>
                         @endif
 
                         <table class="table im-table im-table-compact">
@@ -80,7 +80,7 @@
                             <h4>When to use</h4>
                             <p>After an SDE update, to confirm the industry tables imported fully (not a partial/aborted download).</p>
                             <h4>Heads up</h4>
-                            <p>Zero counts with the tables present usually means the import was interrupted — re-run <code>php artisan industry-manager:import-sde</code>.</p>
+                            <p>Recipe tables are not populated in this build (SDE import is disabled), so zero counts are expected here for now.</p>
                         </div>
 
                         <div class="im-result-grid">

@@ -2,29 +2,29 @@
 
 namespace IndustryManager\Helpers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 /**
  * IndustryData — runtime guard + canonical table/constant registry for the
- * industry-recipe SDE tables this plugin depends on.
+ * industry-recipe tables this plugin consumes.
  *
- * These tables are populated by our own importer command
- * (`php artisan industry-manager:import-sde`, see ImportSdeCommand), which
- * flattens CCP's official JSONL SDE (blueprints.jsonl + planetSchematics.jsonl)
- * into them — re-using the SDE files SeAT already extracted, independent of
- * SeAT's core `eve:update:sde`. Until the operator runs the importer, the
- * tables do not exist — so every read path MUST gate on
- * isInstalled()/isPiInstalled() and the UI must show the "import recipe data"
- * notice rather than 500.
+ * SDE IMPORT HAS BEEN REMOVED FOR NOW. Nothing currently populates these
+ * tables; the consuming code (ProductionCalculator, PiSchematicService) reads
+ * them when present. isInstalled()/isPiInstalled() therefore check for actual
+ * ROWS, not just table existence — so whether the tables are absent OR present
+ * but empty, every recipe-powered page degrades to a neutral "recipe data not
+ * loaded" notice rather than 500 or a misleading "no recipe" everywhere.
  *
- * No ESI. Pure SDE + synced-table consumer.
+ * A direct importer into plugin-owned tables can be re-introduced later.
+ *
+ * No ESI. Reads SeAT's live synced tables + (when populated) these recipe tables.
  */
 class IndustryData
 {
     /**
-     * Our own flat recipe tables, populated by ImportSdeCommand from CCP's
-     * blueprints.jsonl. Names are SDE-canonical CamelCase (matching invTypes,
-     * dgmTypeAttributes…) so joins read naturally.
+     * Flat recipe table names (SDE-canonical CamelCase so joins read naturally).
+     * Not currently populated — see class docblock.
      */
     public const TABLE_ACTIVITY = 'industryActivity';
     public const TABLE_MATERIALS = 'industryActivityMaterials';
@@ -68,9 +68,9 @@ class IndustryData
     private static ?bool $piInstalledMemo = null;
 
     /**
-     * Is the recipe data present? We treat the two load-bearing tables
-     * (materials + products) as the signal; the others are optional
-     * enrichment that individual features guard for themselves.
+     * Is the manufacturing recipe data present AND populated? Checks the
+     * materials table exists and has at least one row, so an absent table or an
+     * empty (created-but-not-imported) table both read as "not loaded".
      */
     public static function isInstalled(): bool
     {
@@ -80,7 +80,8 @@ class IndustryData
 
         try {
             self::$installedMemo = Schema::hasTable(self::TABLE_MATERIALS)
-                && Schema::hasTable(self::TABLE_PRODUCTS);
+                && Schema::hasTable(self::TABLE_PRODUCTS)
+                && DB::table(self::TABLE_MATERIALS)->exists();
         } catch (\Throwable $e) {
             self::$installedMemo = false;
         }
@@ -89,9 +90,10 @@ class IndustryData
     }
 
     /**
-     * Is the Planetary Industry schematic data present? Both schematic tables
-     * are needed to resolve factory recipes. The live colony data
-     * (character_planet_*) is synced by SeAT core and checked separately.
+     * Is the Planetary Industry schematic data present AND populated? The live
+     * colony data (character_planet_*) is synced by SeAT core and read
+     * separately — this only gates the schematic recipe lookups (factory output
+     * names, the schematic tree).
      */
     public static function isPiInstalled(): bool
     {
@@ -101,7 +103,8 @@ class IndustryData
 
         try {
             self::$piInstalledMemo = Schema::hasTable(self::TABLE_PI_SCHEMATICS)
-                && Schema::hasTable(self::TABLE_PI_TYPEMAP);
+                && Schema::hasTable(self::TABLE_PI_TYPEMAP)
+                && DB::table(self::TABLE_PI_TYPEMAP)->exists();
         } catch (\Throwable $e) {
             self::$piInstalledMemo = false;
         }
@@ -134,10 +137,11 @@ class IndustryData
     }
 
     /**
-     * Cache-busting token for recipe caches. Our importer
-     * (industry-manager:import-sde) stamps `industry_manager_sde_version` on
-     * each successful run, so re-importing after an EVE patch invalidates every
-     * cached recipe. Falls back to the core SDE version, then a constant.
+     * Cache-busting token for recipe caches. A future importer can stamp
+     * `industry_manager_sde_version` to invalidate every cached recipe on
+     * re-import; until then this falls back to the core SDE version, then a
+     * constant. (Kept now so the cache layer needs no change when import
+     * returns.)
      */
     public static function recipeVersion(): string
     {
