@@ -9,7 +9,7 @@ use Seat\Eveapi\Models\Sde\InvType;
  * industryActivityProbabilities — base success chance per (blueprint, activity,
  * product). Primarily activityID = 8 (invention).
  *
- * Columns (Fuzzwork dump): typeID, activityID, productTypeID, probability
+ * Columns (flattened from CCP blueprints.jsonl): typeID, activityID, productTypeID, probability
  *
  * `probability` is the BASE chance (0..1) before decryptor + skill modifiers.
  * The invention calculator layers those on top.

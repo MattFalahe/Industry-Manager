@@ -8,7 +8,7 @@ use Seat\Eveapi\Models\Sde\InvType;
 /**
  * industryActivityMaterials — input materials per (blueprint, activity).
  *
- * Columns (Fuzzwork dump): typeID, activityID, materialTypeID, quantity
+ * Columns (flattened from CCP blueprints.jsonl): typeID, activityID, materialTypeID, quantity
  *
  * `quantity` is the base requirement for ONE run at 0% ME. The calculator
  * applies ME / runs / structure / rig modifiers at compute time; this row is

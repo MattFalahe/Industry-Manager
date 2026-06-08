@@ -72,7 +72,7 @@
             <div class="card-body">
                 <ul class="im-text-muted">
                     <li><strong>No ESI calls.</strong> Blueprints, jobs, structures and assets all come from data SeAT already syncs.</li>
-                    <li><strong>Recipes</strong> (what each blueprint or schematic needs) come from EVE's Static Data Export. Industry Manager imports its own tables via <code>php artisan industry-manager:import-sde</code> (Fuzzwork <code>latest/</code>), independent of SeAT's core SDE.</li>
+                    <li><strong>Recipes</strong> (what each blueprint or schematic needs) come from CCP's official Static Data Export. Industry Manager imports its own tables via <code>php artisan industry-manager:import-sde</code>, re-using the CCP SDE files SeAT already downloads (independent of SeAT's core SDE, never Fuzzwork).</li>
                     <li><strong>Pricing / ISK</strong> is not part of this version. It arrives with Manager Core integration in a later update.</li>
                     <li>Persisted preferences (default ME, decryptor, etc.) are planned but not stored yet.</li>
                 </ul>

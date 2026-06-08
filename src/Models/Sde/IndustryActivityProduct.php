@@ -8,7 +8,7 @@ use Seat\Eveapi\Models\Sde\InvType;
 /**
  * industryActivityProducts — output product per (blueprint, activity).
  *
- * Columns (Fuzzwork dump): typeID, activityID, productTypeID, quantity
+ * Columns (flattened from CCP blueprints.jsonl): typeID, activityID, productTypeID, quantity
  *
  * For activityID = 1 (manufacturing) this maps a blueprint to the item it
  * produces and the per-run output quantity. Reversed (productTypeID -> typeID)

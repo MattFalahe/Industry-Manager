@@ -78,13 +78,14 @@ class IndustryManagerServiceProvider extends AbstractSeatPlugin
         // NOTE on recipe data: the industry + planetary recipe tables
         // (industryActivity* / planetSchematics*) are NOT part of SeAT's core
         // SDE. We deliberately do NOT use registerSdeTables() to piggyback on
-        // `eve:update:sde`: that re-downloads the ENTIRE core SDE (heavy) and is
-        // coupled to a version-pinned Fuzzwork path that can 404 on a rotated
-        // version. Instead, the operator runs our own dedicated importer,
-        // `php artisan industry-manager:import-sde`, which fetches ONLY our ~7
-        // tables from Fuzzwork's stable `latest/` dump. See ImportSdeCommand and
-        // IndustryData::isInstalled() / isPiInstalled() (the runtime guards the
-        // UI uses to show an "import recipe data" notice until then).
+        // `eve:update:sde`: that re-downloads the ENTIRE core SDE and is coupled
+        // to a version-pinned Fuzzwork path that can 404 on a rotated version
+        // (and Fuzzwork lags patches anyway). Instead the operator runs our own
+        // importer, `php artisan industry-manager:import-sde`, which flattens
+        // CCP's official JSONL SDE (blueprints.jsonl + planetSchematics.jsonl) —
+        // re-using the files SeAT already extracted — into our flat tables. See
+        // ImportSdeCommand and IndustryData::isInstalled()/isPiInstalled() (the
+        // runtime guards the UI uses to show an "import recipe data" notice).
     }
 
     public function getName(): string

@@ -8,7 +8,7 @@ use Seat\Eveapi\Models\Sde\InvType;
 /**
  * industryActivitySkills — skill requirements per (blueprint, activity).
  *
- * Columns (Fuzzwork dump): typeID, activityID, skillID, level
+ * Columns (flattened from CCP blueprints.jsonl): typeID, activityID, skillID, level
  *
  * Used to tell a user whether their character can actually run a given job,
  * and to flag missing prerequisites on the production tree.

@@ -8,20 +8,23 @@ use Illuminate\Support\Facades\Schema;
  * IndustryData — runtime guard + canonical table/constant registry for the
  * industry-recipe SDE tables this plugin depends on.
  *
- * These tables are downloaded by our own importer command
+ * These tables are populated by our own importer command
  * (`php artisan industry-manager:import-sde`, see ImportSdeCommand), which
- * pulls only our tables from Fuzzwork's `latest/` dump — independent of SeAT's
- * core `eve:update:sde`. Until the operator runs the importer, the tables do
- * not exist — so every read path MUST gate on isInstalled()/isPiInstalled()
- * and the UI must show the "import recipe data" notice rather than 500.
+ * flattens CCP's official JSONL SDE (blueprints.jsonl + planetSchematics.jsonl)
+ * into them — re-using the SDE files SeAT already extracted, independent of
+ * SeAT's core `eve:update:sde`. Until the operator runs the importer, the
+ * tables do not exist — so every read path MUST gate on
+ * isInstalled()/isPiInstalled() and the UI must show the "import recipe data"
+ * notice rather than 500.
  *
  * No ESI. Pure SDE + synced-table consumer.
  */
 class IndustryData
 {
     /**
-     * SDE tables we ask SeAT to download. Names are Fuzzwork/CCP canonical
-     * (CamelCase, matching the rest of the SDE: invTypes, dgmTypeAttributes…).
+     * Our own flat recipe tables, populated by ImportSdeCommand from CCP's
+     * blueprints.jsonl. Names are SDE-canonical CamelCase (matching invTypes,
+     * dgmTypeAttributes…) so joins read naturally.
      */
     public const TABLE_ACTIVITY = 'industryActivity';
     public const TABLE_MATERIALS = 'industryActivityMaterials';
