@@ -664,3 +664,15 @@
 .industry-manager-wrapper .im-pi-progress-bar.warn { background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%); }
 .industry-manager-wrapper .im-pi-progress-bar.danger { background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); }
 .industry-manager-wrapper .im-eta-expired { font-weight: 700; color: #ff6b6b; }
+
+/* PI project action buttons */
+.industry-manager-wrapper .im-mini-danger { color: #ff6b6b; }
+.industry-manager-wrapper .im-mini-danger:hover { border-color: rgba(220,53,69,0.5); color: #ff8787; }
+.industry-manager-wrapper .im-icon-btn {
+    background: transparent;
+    border: none;
+    color: var(--im-text-muted);
+    padding: 2px 6px;
+    border-radius: var(--im-radius-sm);
+}
+.industry-manager-wrapper .im-icon-btn:hover { color: #ff6b6b; background: rgba(220,53,69,0.1); }
